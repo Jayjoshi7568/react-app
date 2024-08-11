@@ -1,9 +1,9 @@
-pipeline{
+pipeline {
     agent any
 
     environment {
-        AWS_REGION = 'us-east-1' 
-        S3_BUCKET = 'react-app-bucket-xyz'
+        AWS_REGION = 'us-east-1'
+        S3_BUCKET = 'react-app-bucket-xyz'  // Ensure this bucket name is correct and unique
     }
 
     stages {
@@ -24,11 +24,9 @@ pipeline{
         }
         stage('Deploy to S3') {
             steps {
-                {
-                    sh '''
-                    aws s3 sync build/ s3://$S3_BUCKET/ --delete --region $AWS_REGION
-                    '''
-                }
+                sh '''
+                aws s3 sync build/ s3://$S3_BUCKET/ --delete --region $AWS_REGION
+                '''
             }
         }
     }
@@ -41,5 +39,4 @@ pipeline{
             echo 'Deployment failed!'
         }
     }
-
 }
